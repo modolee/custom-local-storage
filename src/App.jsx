@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { 
+  EVENT, 
+  transformIntoSetItemWithCustomEvent, 
+  transformIntoRemoveItemWithCustomEvent 
+} from './customLocalStorage';
 
 const ACCESS_TOKEN = 'accessToken'
-const EVENT = {
-  STORAGE: 'storage',
-  CUSTOM_STORAGE_SET_ITEM: 'CustomStorageSetItem',
-  CUSTOM_STORAGE_REMOVE_ITEM: 'CustomStorageRemoveItem'
-}
 
 export const App = () => {
   const [accessToken, setAccessToken] = useState(localStorage.getItem(ACCESS_TOKEN));
@@ -25,44 +25,12 @@ export const App = () => {
     }
   }
 
-  const saveAccessTokenWithCustomStorageEvent = () => {
-    const originalSetItem = localStorage.setItem;
-    
-    localStorage.setItem = function(...rest) {
-      const [key, value] = rest;
-      const event = new Event(EVENT.CUSTOM_STORAGE_SET_ITEM);
-
-      event.key = key;
-      event.oldValue = localStorage.getItem(key);
-      event.newValue = value;
-
-      window.dispatchEvent(event);
-
-      originalSetItem.apply(this, rest);
-    };
-  }
-
-  const removeAccessTokenWithCustomStorageEvent = () => {
-    const originalRemoveItem = localStorage.removeItem;
-
-    localStorage.removeItem = function(...rest) {
-      const [key] = rest;
-      const event = new Event(EVENT.CUSTOM_STORAGE_REMOVE_ITEM);
-      event.key = key;
-
-      window.dispatchEvent(event);
-
-      originalRemoveItem.apply(this, rest);
-    };
-  }
-
   const customEventOn = () => {
-    saveAccessTokenWithCustomStorageEvent();
-    removeAccessTokenWithCustomStorageEvent();
+    transformIntoSetItemWithCustomEvent();
+    transformIntoRemoveItemWithCustomEvent();
   }
 
   useEffect(() => {
-
     window.addEventListener(EVENT.STORAGE, handleStorageChange);
     window.addEventListener(EVENT.CUSTOM_STORAGE_SET_ITEM, handleStorageChange, false);
     window.addEventListener(EVENT.CUSTOM_STORAGE_REMOVE_ITEM, handleStorageChange, false);
