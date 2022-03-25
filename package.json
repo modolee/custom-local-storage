@@ -1,5 +1,10 @@
 {
-  "name": "local-storage",
+  "name": "local-storage-event",
+  "author": {
+    "name": "modolee",
+    "email": "modolee.si@gmail.com",
+    "url": "https://github.com/modolee"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
