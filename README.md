@@ -1,3 +1,16 @@
+# 사용법
+
+```javascript
+import { transformIntoSetItemWithCustomEvent, transformIntoRemoveItemWithCustomEvent }
+
+// localStorage.setItem, localStorage.removeItem 사용하기 전에 실행
+transformIntoSetItemWithCustomEvent('setItemEventName');
+transformIntoRemoveItemWithCustomEvent('removeItemEventName');
+
+window.addEventListener('setItemEventName', handleStorageChange, false);
+window.addEventListener('removeItemEventName', handleStorageChange, false);
+```
+
 # Original Local Storage Event
 
 - Browser의 Local Storage에 저장한 데이터가 변경 될 때 이벤트가 발생한다.
@@ -53,9 +66,11 @@ localStorage.removeItem = function (...rest) {
 window.addEventListener("CustomStorageRemoveItem", handleStorageChange, false);
 ```
 
-# 실행
+# 예제 실행
 
 ```bash
+cd example
+yarn
 yarn start
 ```
 
