@@ -67,8 +67,12 @@ yarn start
 - AccessToken 저장, 삭제 버튼을 누르면서 현재 창이 아닌 다른 쪽 창의 상태를 확인한다.
 - 현재 창은 변화가 없으며, 다른 쪽 창만 변화가 있다.
 
+![](./docs/original_storage_event.gif)
+
 ## Custom Storage Event
 
 - CUSTOM ON 버튼을 누른다.
 - AccessToken 저장, 삭제 버튼을 누르면서 현재 창과 다른 쪽 창의 상태를 확인한다.
 - 현재 창, 다른 쪽 창 모두 변화가 있다.
+
+![](./docs/custom_storage_event.gif)
