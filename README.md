@@ -1,14 +1,17 @@
 # 사용법
 
 ```javascript
-import { transformIntoSetItemWithCustomEvent, transformIntoRemoveItemWithCustomEvent }
+import {
+  transformIntoSetItemWithCustomEvent,
+  transformIntoRemoveItemWithCustomEvent,
+} from "custom-local-storage";
 
 // localStorage.setItem, localStorage.removeItem 사용하기 전에 실행
-transformIntoSetItemWithCustomEvent('setItemEventName');
-transformIntoRemoveItemWithCustomEvent('removeItemEventName');
+transformIntoSetItemWithCustomEvent("setItemEventName");
+transformIntoRemoveItemWithCustomEvent("removeItemEventName");
 
-window.addEventListener('setItemEventName', handleStorageChange, false);
-window.addEventListener('removeItemEventName', handleStorageChange, false);
+window.addEventListener("setItemEventName", handleStorageChange, false);
+window.addEventListener("removeItemEventName", handleStorageChange, false);
 ```
 
 # Original Local Storage Event
