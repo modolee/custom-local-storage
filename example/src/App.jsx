@@ -3,7 +3,7 @@ import {
   EVENT, 
   transformIntoSetItemWithCustomEvent, 
   transformIntoRemoveItemWithCustomEvent 
-} from './customLocalStorage';
+} from 'custom-local-storage';
 
 const ACCESS_TOKEN = 'accessToken'
 

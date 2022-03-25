@@ -1,4 +1,5 @@
 export const EVENT = {
+  STORAGE: 'storage',
   CUSTOM_STORAGE_SET_ITEM: 'CustomStorageSetItem',
   CUSTOM_STORAGE_REMOVE_ITEM: 'CustomStorageRemoveItem'
 }
