@@ -1,27 +1,39 @@
 {
   "name": "custom-local-storage",
+  "description": "Make localStorage self-awareable",
   "author": {
     "name": "modolee",
     "email": "modolee.si@gmail.com",
     "url": "https://github.com/modolee"
   },
+  "keywords": [
+    "localStorage",
+    "addEventListener",
+    "event"
+  ],
   "repository": {
+    "type": "git",
     "url": "https://github.com/modolee/custom-local-storage"
   },
+  "bugs": {
+    "url": "https://github.com/modolee/custom-local-storage/issues"
+  },
+  "homepage": "https://github.com/modolee/custom-local-storage#readme",
   "license": "MIT",
-  "version": "0.2.4",
-  "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  "version": "0.2.5",
   "files": [
-    "index.js"
-  ]
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/index.js.map"
+  ],
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.3"
+  }
 }
