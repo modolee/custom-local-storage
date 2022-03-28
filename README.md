@@ -1,17 +1,18 @@
 # 사용법
 
-```javascript
+```typescript
 import {
-  transformIntoSetItemWithCustomEvent,
-  transformIntoRemoveItemWithCustomEvent,
+  init,
+  addEventListener,
+  removeEventListener,
 } from "custom-local-storage";
 
 // localStorage.setItem, localStorage.removeItem 사용하기 전에 실행
-transformIntoSetItemWithCustomEvent("setItemEventName");
-transformIntoRemoveItemWithCustomEvent("removeItemEventName");
+init("CustomStorage");
 
-window.addEventListener("setItemEventName", handleStorageChange, false);
-window.addEventListener("removeItemEventName", handleStorageChange, false);
+// 이벤트 리스너 등록, 삭제
+addEventListener("CustomStorage", handleStorageChange);
+removeEventListener("CustomStorage", handleStorageChange);
 ```
 
 # Original Local Storage Event
@@ -20,7 +21,7 @@ window.addEventListener("removeItemEventName", handleStorageChange, false);
 - 해당 이벤트의 경우 동일 Window에서 발생한 경우 감지하지 못하고 오로지, 다른 Window에서 발생할 때에만 감지할 수 있다.
 - 애초에 용도가 서로 다른 Window 간의 데이터 공유를 위해서 만들어졌다고 한다.
 
-```javascript
+```typescript
 window.addEventListener("storage", eventHandler);
 ```
 
@@ -30,51 +31,72 @@ window.addEventListener("storage", eventHandler);
 - 임시의 이벤트를 발생시켜 해당 이벤트를 가지고 처리하는 방식이다.
 - setItem, removeItem을 실행하기 전 아래 코드를 먼저 실행하면 된다.
 
+## CustomStorageEvent
+
+```typescript
+export class CustomLocalStorageEvent extends Event {
+  key: string;
+  oldValue: string;
+  newValue: string;
+
+  constructor(params: {
+    type: string;
+    eventInitDict?: EventInit;
+    key: string;
+    oldValue: string;
+    newValue: string;
+  }) {
+    super(params.type, params.eventInitDict);
+    this.key = params.key;
+    this.oldValue = params.oldValue;
+    this.newValue = params.newValue;
+  }
+}
+```
+
 ## localStorage.setItem
 
-```javascript
+```typescript
 const originalSetItem = localStorage.setItem;
 
-localStorage.setItem = function (...rest) {
-  const [key, value] = rest;
-  const event = new Event("CustomStorageSetItem");
-
-  event.key = key;
-  event.oldValue = localStorage.getItem(key);
-  event.newValue = value;
+localStorage.setItem = function (key, value): void {
+  const event = new CustomLocalStorageEvent({
+    type,
+    key,
+    oldValue: localStorage.getItem(key),
+    newValue: value,
+  });
 
   window.dispatchEvent(event);
 
-  originalSetItem.apply(this, rest);
+  originalSetItem.apply(this, [key, value]);
 };
-
-window.addEventListener("CustomStorageSetItem", handleStorageChange, false);
 ```
 
 ## localStorage.removeItem
 
-```javascript
+```typescript
 const originalRemoveItem = localStorage.removeItem;
 
-localStorage.removeItem = function (...rest) {
-  const [key] = rest;
-  const event = new Event("CustomStorageRemoveItem");
-  event.key = key;
+localStorage.removeItem = function (key): void {
+  const event = new CustomLocalStorageEvent({
+    type,
+    key,
+    oldValue: localStorage.getItem(key),
+    newValue: "",
+  });
 
   window.dispatchEvent(event);
 
-  originalRemoveItem.apply(this, rest);
+  originalRemoveItem.apply(this, [key]);
 };
-
-window.addEventListener("CustomStorageRemoveItem", handleStorageChange, false);
 ```
 
 # 예제 실행
 
 ```bash
-cd example
-yarn
-yarn start
+yarn && yarn build
+cd example && yarn && yarn start
 ```
 
 # 동작 확인 방법

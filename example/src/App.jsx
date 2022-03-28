@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  EVENT, 
-  transformIntoSetItemWithCustomEvent, 
-  transformIntoRemoveItemWithCustomEvent 
+  init, addEventListener, removeEventListener
 } from 'custom-local-storage';
 
 const ACCESS_TOKEN = 'accessToken'
+const EVENT = {
+ STORAGE: 'storage',
+ CUSTOM_STORAGE: 'CustomStorage'
+}
 
 export const App = () => {
   const [accessToken, setAccessToken] = useState(localStorage.getItem(ACCESS_TOKEN));
@@ -26,18 +28,15 @@ export const App = () => {
   }
 
   const customEventOn = () => {
-    transformIntoSetItemWithCustomEvent();
-    transformIntoRemoveItemWithCustomEvent();
+    init(EVENT.CUSTOM_STORAGE);
   }
 
   useEffect(() => {
     window.addEventListener(EVENT.STORAGE, handleStorageChange);
-    window.addEventListener(EVENT.CUSTOM_STORAGE_SET_ITEM, handleStorageChange, false);
-    window.addEventListener(EVENT.CUSTOM_STORAGE_REMOVE_ITEM, handleStorageChange, false);
+    addEventListener(EVENT.CUSTOM_STORAGE, handleStorageChange);
     return () => {
-      window.removeEventListener(EVENT.STORAGE, handleStorageChange);
-      window.removeEventListener(EVENT.CUSTOM_STORAGE_SET_ITEM, handleStorageChange, false);
-      window.removeEventListener(EVENT.CUSTOM_STORAGE_REMOVE_ITEM, handleStorageChange, false);
+      window.removeEventListener(EVENT.STORAG, handleStorageChange);
+      removeEventListener(EVENT.CUSTOM_STORAGE, handleStorageChange);
     }
   }, []);
 
