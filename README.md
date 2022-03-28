@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/custom-local-storage.png)](https://npmjs.org/package/custom-local-storage)
+
 # 사용법
 
 ```typescript
